@@ -1,0 +1,35 @@
+
+int a;
+int ventilo = 2;
+float ctemperature;
+int B=3975; 
+float resistance;
+
+void setup()
+{
+  Serial.begin(9600);  
+  pinMode(ventilo, OUTPUT);
+}
+
+void loop()
+{
+  a=analogRead(0);
+  resistance=(float)(1023-a)*10000/a; 
+  ctemperature=1/(log(resistance/10000)/B+1/298.15)-273.15;
+  Serial.print(ctemperature);
+  Serial.write(186);
+  Serial.println("C ");
+
+  
+  if (ctemperature > 22) {
+    digitalWrite(ventilo, LOW);
+    Serial.println(" Ventilateur OFF ");
+  }
+  else {
+    digitalWrite(ventilo, HIGH);
+    Serial.println(" Ventilateur ON ");
+  }
+
+  
+  delay(10000);
+}
